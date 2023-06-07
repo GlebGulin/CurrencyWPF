@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace NLayerApp.BLL
 {
@@ -14,35 +14,58 @@ namespace NLayerApp.BLL
     {
         private Curency currency;
         public ObservableCollection<Curency> Curencies { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
+        
         public CurrenciesViewModel()
         {
-            List<Curency> model = null;
-            //var client = new HttpClient();
-            //var task = client.GetAsync("https://api.coincap.io/v2/assets?limit=10")
-            //  .ContinueWith((taskwithresponse) =>
-            //  {
-            //      var response = taskwithresponse.Result;
-            //      string jsonString = response.Content.ReadAsStringAsync();
-            //      dynamic jsonObj = JsonConvert.DeserializeObject(jsonString);
+            List<CurrencyTemp> models = null;
 
-            //      Console.WriteLine(jsonString);
-            //      jsonString.Wait();
-            //      model = JsonConvert.DeserializeObject<List<Curency>>(jsonString.Result);
-
-            //  });
-            //task.Wait();
-
-            using (var client = new HttpClient())
+            try
             {
-                using var result = client.GetAsync("https://api.coincap.io/v2/assets?limit=10");
-                string jsonString = result.Result.Content.ReadAsStringAsync().Result;
-                dynamic jsonObj2 = JsonConvert.DeserializeObject(jsonString);
-                JObject jsonObj = JObject.Parse(jsonString);
-                string name = (string)(Object)jsonObj["data"].ToString();
-                model = JsonConvert.DeserializeObject<List<Curency>>(name);
+                using (var client = new HttpClient())
+                {
+                    using var result = client.GetAsync("https://api.coincap.io/v2/assets?limit=10");
+                    string jsonString = result.Result.Content.ReadAsStringAsync().Result;
+                    var jsonObj = (JObject)JsonConvert.DeserializeObject(jsonString);
+                    var jsonArr = jsonObj.SelectToken("data");
+                    List<CurrencyTemp> lst11 = JsonConvert.DeserializeObject<List<CurrencyTemp>>(jsonArr.ToString());
+                    models = JsonConvert.DeserializeObject<List<CurrencyTemp>>(jsonArr.ToString());
+                }
+                if (models.Count != 0)
+                {
+                    Curencies = new ObservableCollection<Curency>();
+                    foreach (var model in models)
+                    {
+                        var cur = new Curency()
+                        {
+                            Id = model.Id,
+                            Name = model.Name,
+                            Supply = model.Supply,
+                            Rank = model.Rank,
+                            Symbol = model.Symbol,
+                            MaxSupply = model.MaxSupply,
+                            MarketCapUsd = model.MarketCapUsd,
+                            VolumeUsd24Hr = model.VolumeUsd24Hr,
+                            PriceUsd = model.PriceUsd,
+                            ChangePercent24Hr = model.ChangePercent24Hr,
+                            Vwap24Hr = model.Vwap24Hr,
+                            Explorer = model.Explorer
+                        };
+                        Curencies.Add(cur);
+                    }
+                }
             }
-            var a = model;
+            catch(Exception ex)
+            {
+                var error = ex.Message;
+                MessageBoxButton button = MessageBoxButton.YesNoCancel;
+                MessageBoxImage icon = MessageBoxImage.Warning;
+                MessageBoxResult result;
+                result = MessageBox.Show(error, null, button, icon, MessageBoxResult.Yes);
+            }
+            
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }
