@@ -12,7 +12,7 @@ namespace NLayerApp.BLL
 {
     public class CurrenciesViewModel : INotifyPropertyChanged
     {
-        private Curency currency;
+        private Curency currencySelected;
         public ObservableCollection<Curency> Curencies { get; set; }
         
         public CurrenciesViewModel()

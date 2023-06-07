@@ -24,7 +24,7 @@
         
         <Grid Grid.Column="0">
             <Label Content="Top 10 currencies." />
-            <ListBox ItemsSource="{Binding Curencies}" SelectedItem="{Binding CurrencySelected}">
+            <ListBox ItemsSource="{Binding Curencies}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
