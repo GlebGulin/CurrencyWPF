@@ -1,12 +1,11 @@
-﻿<Window x:Class="Currencies.CurrencyDetailWindow"
+﻿<UserControl x:Class="Currencies.Views.CurrenciesTopListView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Currencies"
-        mc:Ignorable="d"
-        Title="Currencies" Height="450" Width="800">
-    <Window.Resources>
+        mc:Ignorable="d">
+    <UserControl.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontWeight" Value="Bold" />
@@ -14,17 +13,17 @@
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="12" />
         </Style>
-    </Window.Resources>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="0.9*" />
         </Grid.ColumnDefinitions>
-        
-        
+
+
         <Grid Grid.Column="0">
             <Label Content="Top 10 currencies." />
-            <ListBox ItemsSource="{Binding Curencies}">
+            <ListBox ItemsSource="{Binding Curencies}" SelectedItem="{Binding SelectedCurrency}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -34,6 +33,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-       
+
     </Grid>
-</Window>
+</UserControl>

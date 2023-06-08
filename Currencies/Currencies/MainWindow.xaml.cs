@@ -1,5 +1,4 @@
-﻿using NLayerApp.BLL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +23,6 @@ namespace Currencies
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new CurrenciesViewModel();
         }
     }
 }

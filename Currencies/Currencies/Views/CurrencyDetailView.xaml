@@ -1,0 +1,200 @@
+﻿<UserControl x:Class="Currencies.Views.CurrencyDetailView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Currencies"
+        mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="Id" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.Id, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="Rank" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.Rank, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="Symbol" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.Symbol, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="Name" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.Name, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="Supply" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.Supply, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="MaxSupply" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.MaxSupply, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="MarketCapUsd" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.MarketCapUsd, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="VolumeUsd24Hr" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.VolumeUsd24Hr, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="PriceUsd" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.PriceUsd, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="9">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="ChangePercent24Hr" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.ChangePercent24Hr, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="Vwap24Hr" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock Text="{Binding Curency.Vwap24Hr, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="11">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBlock Text="Explorer" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <TextBlock>
+                    <Hyperlink Command="{Binding OpenURL}" ><TextBlock Text="{Binding Path=Curency.Explorer}"/>
+                    </Hyperlink>        
+                </TextBlock>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Button Command="{Binding BackToCurrencies}">
+                <TextBlock>Back to currencies</TextBlock>
+            </Button>
+        </Grid>
+    </Grid>
+    
+</UserControl>

@@ -6,19 +6,44 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 
-namespace NLayerApp.BLL
+namespace NLayerApp.BLL.ViewModels
 {
-    public class CurrenciesViewModel : INotifyPropertyChanged
+    public class CurrenciesViewModel : ViewModelBase
     {
-        private Curency currencySelected;
+        public ICommand GetDetailCommand { get; }
+        private Curency selectedCurrency;
         public ObservableCollection<Curency> Curencies { get; set; }
-        
+        public Curency SelectedCurrency
+        {
+            get { return selectedCurrency; }
+            set
+            {
+                selectedCurrency = value;
+                OnPropertyChanged("SelectedCurrency");
+            }
+        }
         public CurrenciesViewModel()
         {
-            List<CurrencyTemp> models = null;
+            FetchData();
+        }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                var id = this.SelectedCurrency.Id;
+            }
+        }
+
+        private void FetchData()
+        {
+            List<CurrencyTemp> models = null;
             try
             {
                 using (var client = new HttpClient())
@@ -54,7 +79,7 @@ namespace NLayerApp.BLL
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var error = ex.Message;
                 MessageBoxButton button = MessageBoxButton.YesNoCancel;
@@ -62,10 +87,6 @@ namespace NLayerApp.BLL
                 MessageBoxResult result;
                 result = MessageBox.Show(error, null, button, icon, MessageBoxResult.Yes);
             }
-            
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
     }
 }

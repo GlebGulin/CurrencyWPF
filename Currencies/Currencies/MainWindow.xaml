@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Currencies"
+        xmlns:views="clr-namespace:Currencies.Views"
+        xmlns:vms="clr-namespace:Currencies.ViewModels"
         mc:Ignorable="d"
         Title="Currencies" Height="450" Width="800">
     <Window.Resources>
@@ -15,25 +17,18 @@
             <Setter Property="FontSize" Value="12" />
         </Style>
     </Window.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="0.9*" />
-        </Grid.ColumnDefinitions>
-        
-        
-        <Grid Grid.Column="0">
-            <Label Content="Top 10 currencies." />
-            <ListBox ItemsSource="{Binding Curencies}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Path=Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid MaxWidth="600" Margin="20 10">
+            <Grid.Resources>
+                <DataTemplate DataType="{x:Type vms:CurrenciesViewModel}">
+                    <views:CurrenciesTopListView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vms:CurrencyDetailViewModel}">
+                    <views:CurrencyDetailView />
+                </DataTemplate>
+            </Grid.Resources>
+
+            <ContentControl Content="{Binding CurrentViewModel}" />
         </Grid>
-       
-    </Grid>
+    </ScrollViewer>
 </Window>

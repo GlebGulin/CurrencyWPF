@@ -4,14 +4,25 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NLayerApp.BLL\NLayerApp.BLL.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="CurrencyDetailWindow.xaml">
+    <ProjectReference Include="..\NLayerApp.DAL\NLayerApp.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\CurrenciesTopListView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\CurrencyDetailView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>
