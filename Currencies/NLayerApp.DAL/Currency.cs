@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace NLayerApp.DAL
 {
-    public class Curency : INotifyPropertyChanged
+    public class Currency : INotifyPropertyChanged
     {
         private string id;
         private string rank;

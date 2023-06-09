@@ -6,9 +6,21 @@
         xmlns:local="clr-namespace:Currencies"
         mc:Ignorable="d">
     <UserControl.Resources>
-        <Style TargetType="TextBlock">
+        <Style x:Key="Usual" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="Normal" />
+        </Style>
+        <Style x:Key="Header" TargetType="TextBlock">
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style x:Key="Vals" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Foreground" Value="#FF2A5B23" />
+        </Style>
+        <Style x:Key="Manage" TargetType="Button">
+            <Setter Property="Margin" Value="10" />
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="12" />
@@ -18,8 +30,13 @@
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
+            <TextBlock Style="{StaticResource Header}" Text="Description" >
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -36,163 +53,174 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="Id" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Unique identifier for asset" />
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.Id, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="Rank" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Rank is in ascending order" />
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.Rank, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.Rank, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="Symbol" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Most common symbol used to identify this asset on an exchange" TextWrapping="Wrap"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.Symbol, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.Symbol, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="Name" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Name for asset" />
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.Name, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.Name, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
             <Grid Grid.Row="4">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="Supply" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Available supply for trading" TextWrapping="Wrap"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.Supply, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.Supply, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="5">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="MaxSupply" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Total quantity of asset issued" TextWrapping="Wrap"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.MaxSupply, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.MaxSupply, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="6">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="MarketCapUsd" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Supply x Price" TextWrapping="Wrap"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.MarketCapUsd, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.MarketCapUsd, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="7">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="VolumeUsd24Hr" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Quantity of trading volume represented in USD over the last 24 hours"  TextWrapping="Wrap"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.VolumeUsd24Hr, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.VolumeUsd24Hr, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="8">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="PriceUsd" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Volume-weighted price based on real-time market data, translated to USD" TextWrapping="Wrap" />
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.PriceUsd, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.PriceUsd, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="9">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="ChangePercent24Hr" />
+                    <TextBlock Style="{StaticResource Usual}" Text="The direction and value change in the last 24 hours" TextWrapping="Wrap"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.ChangePercent24Hr, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.ChangePercent24Hr, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="Vwap24Hr" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Volume Weighted Average Price in the last 24 hours" TextWrapping="Wrap"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.Vwap24Hr, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Vals}" Text="{Binding Currency.Vwap24Hr, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="11">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.65*" />
+                    <ColumnDefinition Width="0.35*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <TextBlock Text="Explorer" />
+                    <TextBlock Style="{StaticResource Usual}" Text="Explorer" TextWrapping="Wrap"/>
                 </Grid>
                 <Grid Grid.Column="1">
                     <TextBlock>
-                    <Hyperlink Command="{Binding OpenURL}" ><TextBlock Text="{Binding Path=Curency.Explorer}"/>
+                    <Hyperlink Command="{Binding OpenURL}" ><TextBlock Text="{Binding Path=Currency.Explorer}"/>
                     </Hyperlink>        
                 </TextBlock>
                 </Grid>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1">
-            <Button Command="{Binding BackToCurrencies}">
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource Manage}" Grid.Column="0" Command="{Binding BackToCurrencies}">
                 <TextBlock>Back to currencies</TextBlock>
+            </Button>
+            <Button Style="{StaticResource Manage}" Grid.Column="1" Command="{Binding OpenHistoryCurrency}">
+                <TextBlock>History</TextBlock>
+            </Button>
+            <Button Style="{StaticResource Manage}" Grid.Column="2" Command="">
+                <TextBlock>Currency exchange</TextBlock>
             </Button>
         </Grid>
     </Grid>

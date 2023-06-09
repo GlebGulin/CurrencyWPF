@@ -18,36 +18,40 @@ namespace Currencies.ViewModels
     {
         public ICommand OpenURL => new Command(() => { OpenURLCurrency(); });
         public ICommand BackToCurrencies { get; }
+        public ICommand HistoryCurrency { get; }
+        public ICommand OpenHistoryCurrency => new Command(() => { OpenHistory(); });
         public string Id { get; set; }
-        private Curency _сurency { get; set; }
-        public Curency Curency
+        private Currency _сurrency { get; set; }
+        public Currency Currency
         {
-            get { return _сurency; }
+            get { return _сurrency; }
             set
             {
-                _сurency = value;
-                OnPropertyChanged("Curency");
+                _сurrency = value;
+                OnPropertyChanged("Currency");
             }
         }
-        public CurrencyDetailViewModel(NavigationService<CurrenciesViewModel> getCurrencies) 
+        public CurrencyDetailViewModel(NavigationService<CurrenciesViewModel> getCurrencies, NavigationService<HistoryViewModel> getHistoryCurrency) 
         {
             
-            BackToCurrencies = new NavigateCommand<CurrenciesViewModel>(getCurrencies);           
+            BackToCurrencies = new NavigateCommand<CurrenciesViewModel>(getCurrencies); 
+            HistoryCurrency = new NavigateCommand<HistoryViewModel>(getHistoryCurrency);
         }
 
         public override async Task OnInitialized(object parameter)
         {
 
             Id = parameter.ToString();
+            var url = String.Format("{0}{1}", "https://api.coincap.io/v2/assets/", Id);
             try
             {
                 using (var client = new HttpClient())
                 {
-                    using var result = client.GetAsync("https://api.coincap.io/v2/assets/ethereum");
+                    using var result = client.GetAsync(url);
                     string jsonString = result.Result.Content.ReadAsStringAsync().Result;
                     var jsonObj = (JObject)JsonConvert.DeserializeObject(jsonString);
                     var jsonData = jsonObj.SelectToken("data");
-                    Curency = JsonConvert.DeserializeObject<Curency>(jsonData.ToString());
+                    Currency = JsonConvert.DeserializeObject<Currency>(jsonData.ToString());
                 }
             }
             catch (Exception ex)
@@ -64,7 +68,7 @@ namespace Currencies.ViewModels
             try
             {
                 //await Browser.OpenAsync(_сurency.Explorer, BrowserLaunchMode.SystemPreferred);
-                var destinationurl = _сurency.Explorer;
+                var destinationurl = _сurrency.Explorer;
                 var sInfo = new System.Diagnostics.ProcessStartInfo(destinationurl)
                 {
                     UseShellExecute = true,
@@ -78,6 +82,11 @@ namespace Currencies.ViewModels
                 MessageBoxResult result;
                 result = MessageBox.Show(ex.Message, null, button, icon, MessageBoxResult.Yes);
             }
+        }
+
+        private void OpenHistory()
+        {
+            HistoryCurrency.Execute(this.Id);
         }
     }
 }

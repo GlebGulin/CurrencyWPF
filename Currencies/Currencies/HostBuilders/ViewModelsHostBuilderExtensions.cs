@@ -20,6 +20,10 @@ namespace Currencies.HostBuilders
                 services.AddSingleton<Func<CurrencyDetailViewModel>>((s) => () => s.GetRequiredService<CurrencyDetailViewModel>());
                 services.AddSingleton<NavigationService<CurrencyDetailViewModel>>();
 
+                services.AddTransient<HistoryViewModel>();
+                services.AddSingleton<Func<HistoryViewModel>>((s) => () => s.GetRequiredService<HistoryViewModel>());
+                services.AddSingleton<NavigationService<HistoryViewModel>>();
+
                 services.AddSingleton<MainViewModel>();
             });
 

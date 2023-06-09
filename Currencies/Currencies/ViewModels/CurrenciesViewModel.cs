@@ -17,9 +17,9 @@ namespace Currencies.ViewModels
     public class CurrenciesViewModel : ViewModelBase
     {
         public ICommand GetDetailCommand { get; }
-        private Curency selectedCurrency;
-        public ObservableCollection<Curency> Curencies { get; set; }
-        public Curency SelectedCurrency
+        private Currency selectedCurrency;
+        public ObservableCollection<Currency> Curencies { get; set; }
+        public Currency SelectedCurrency
         {
             get { return selectedCurrency; }
             set
@@ -61,10 +61,10 @@ namespace Currencies.ViewModels
                 }
                 if (models.Count != 0)
                 {
-                    Curencies = new ObservableCollection<Curency>();
+                    Curencies = new ObservableCollection<Currency>();
                     foreach (var model in models)
                     {
-                        var cur = new Curency()
+                        var cur = new Currency()
                         {
                             Id = model.Id,
                             Name = model.Name,
