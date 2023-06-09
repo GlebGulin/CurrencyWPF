@@ -14,7 +14,7 @@ namespace Currencies.Commands
 
         public override void Execute(object parameter)
         {
-            _navigationService.Navigate();
+            _navigationService.Navigate(parameter);
         }
     }
 }

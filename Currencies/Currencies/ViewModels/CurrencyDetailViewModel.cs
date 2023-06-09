@@ -18,6 +18,7 @@ namespace Currencies.ViewModels
     {
         public ICommand OpenURL => new Command(() => { OpenURLCurrency(); });
         public ICommand BackToCurrencies { get; }
+        public string Id { get; set; }
         private Curency _сurency { get; set; }
         public Curency Curency
         {
@@ -25,12 +26,19 @@ namespace Currencies.ViewModels
             set
             {
                 _сurency = value;
-                OnPropertyChanged("_сurency");
+                OnPropertyChanged("Curency");
             }
         }
         public CurrencyDetailViewModel(NavigationService<CurrenciesViewModel> getCurrencies) 
         {
-            BackToCurrencies = new NavigateCommand<CurrenciesViewModel>(getCurrencies);
+            
+            BackToCurrencies = new NavigateCommand<CurrenciesViewModel>(getCurrencies);           
+        }
+
+        public override async Task OnInitialized(object parameter)
+        {
+
+            Id = parameter.ToString();
             try
             {
                 using (var client = new HttpClient())
@@ -42,7 +50,7 @@ namespace Currencies.ViewModels
                     Curency = JsonConvert.DeserializeObject<Curency>(jsonData.ToString());
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBoxButton button = MessageBoxButton.YesNoCancel;
                 MessageBoxImage icon = MessageBoxImage.Warning;
@@ -50,16 +58,7 @@ namespace Currencies.ViewModels
                 result = MessageBox.Show(ex.Message, null, button, icon, MessageBoxResult.Yes);
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-            }
-        }
-
+       
         private async Task OpenURLCurrency()
         {
             try

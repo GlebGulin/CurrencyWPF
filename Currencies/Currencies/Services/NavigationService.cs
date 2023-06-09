@@ -1,6 +1,7 @@
 ﻿using Currencies.Stores;
 using Currencies.ViewModels;
 using System;
+using System.Threading.Tasks;
 
 namespace Currencies.Services
 {
@@ -15,9 +16,11 @@ namespace Currencies.Services
             _createViewModel = createViewModel;
         }
 
-        public void Navigate()
+        public void Navigate(object parameters)
         {
+                       
             _navigationStore.CurrentViewModel = _createViewModel();
+            Task.Run(async () => await _navigationStore.CurrentViewModel.OnInitialized(parameters));
         }
     }
 }

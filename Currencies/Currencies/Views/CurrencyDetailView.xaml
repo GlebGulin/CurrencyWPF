@@ -43,7 +43,7 @@
                     <TextBlock Text="Id" />
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Text="{Binding Curency.Id, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </Grid>
 

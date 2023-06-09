@@ -48,7 +48,7 @@ namespace Currencies
         {
             _host.Start();
             NavigationService<CurrenciesViewModel> navigationService = _host.Services.GetRequiredService<NavigationService<CurrenciesViewModel>>();
-            navigationService.Navigate();
+            navigationService.Navigate(null);
 
             MainWindow = _host.Services.GetRequiredService<MainWindow>();
             MainWindow.Show();
