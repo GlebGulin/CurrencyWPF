@@ -24,6 +24,10 @@ namespace Currencies.HostBuilders
                 services.AddSingleton<Func<HistoryViewModel>>((s) => () => s.GetRequiredService<HistoryViewModel>());
                 services.AddSingleton<NavigationService<HistoryViewModel>>();
 
+                services.AddTransient<ExchangeCurrencyViewModel>();
+                services.AddSingleton<Func<ExchangeCurrencyViewModel>>((s) => () => s.GetRequiredService<ExchangeCurrencyViewModel>());
+                services.AddSingleton<NavigationService<ExchangeCurrencyViewModel>>();
+
                 services.AddSingleton<MainViewModel>();
             });
 

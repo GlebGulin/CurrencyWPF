@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Currencies.Views.HistoryCurrencyView"
+﻿<UserControl x:Class="Currencies.Views.ExchangeCurrencyView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -33,13 +33,12 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label Content="Will be history">
+            <Label Content="Will be exchange">
             </Label>
         </Grid>
         <Grid Grid.Row="1">
-            <Canvas Height="300" Width="400">
-                <Polyline Height="300" Stroke="Red" StrokeThickness="4" Points="{Binding DrawModel.PointsNormalize}" ></Polyline>
-            </Canvas>
+            <Label Content="Will be graphic">
+            </Label>
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -50,7 +49,7 @@
             <Button Style="{StaticResource Manage}" Grid.Column="0" Command="{Binding BackToCurrencies}">
                 <TextBlock>Back to currencies</TextBlock>
             </Button>
-            <Button Style="{StaticResource Manage}" Grid.Column="1" Command="">
+            <Button Style="{StaticResource Manage}" Grid.Column="1" Command="{Binding OpenHistoryCurrency}">
                 <TextBlock>History</TextBlock>
             </Button>
             <Button Style="{StaticResource Manage}" Grid.Column="2" Command="">

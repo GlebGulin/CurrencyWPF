@@ -19,7 +19,9 @@ namespace Currencies.ViewModels
         public ICommand OpenURL => new Command(() => { OpenURLCurrency(); });
         public ICommand BackToCurrencies { get; }
         public ICommand HistoryCurrency { get; }
+        public ICommand ExchangeCurrency { get; }
         public ICommand OpenHistoryCurrency => new Command(() => { OpenHistory(); });
+        public ICommand OpenExchangeCurrency => new Command(() => { OpenExchange(); });
         public string Id { get; set; }
         private Currency _сurrency { get; set; }
         public Currency Currency
@@ -31,11 +33,14 @@ namespace Currencies.ViewModels
                 OnPropertyChanged("Currency");
             }
         }
-        public CurrencyDetailViewModel(NavigationService<CurrenciesViewModel> getCurrencies, NavigationService<HistoryViewModel> getHistoryCurrency) 
+        public CurrencyDetailViewModel(NavigationService<CurrenciesViewModel> getCurrencies, 
+                                       NavigationService<HistoryViewModel>    getHistoryCurrency,
+                                       NavigationService<ExchangeCurrencyViewModel> getExchangeCurrency) 
         {
             
-            BackToCurrencies = new NavigateCommand<CurrenciesViewModel>(getCurrencies); 
-            HistoryCurrency = new NavigateCommand<HistoryViewModel>(getHistoryCurrency);
+            BackToCurrencies  = new NavigateCommand<CurrenciesViewModel>(getCurrencies); 
+            HistoryCurrency   = new NavigateCommand<HistoryViewModel>(getHistoryCurrency);
+            ExchangeCurrency  = new NavigateCommand<ExchangeCurrencyViewModel>(getExchangeCurrency);
         }
 
         public override async Task OnInitialized(object parameter)
@@ -87,6 +92,11 @@ namespace Currencies.ViewModels
         private void OpenHistory()
         {
             HistoryCurrency.Execute(this.Id);
+        }
+
+        private void OpenExchange()
+        {
+            ExchangeCurrency.Execute(this.Id);
         }
     }
 }

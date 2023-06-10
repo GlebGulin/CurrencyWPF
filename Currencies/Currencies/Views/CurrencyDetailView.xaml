@@ -219,7 +219,7 @@
             <Button Style="{StaticResource Manage}" Grid.Column="1" Command="{Binding OpenHistoryCurrency}">
                 <TextBlock>History</TextBlock>
             </Button>
-            <Button Style="{StaticResource Manage}" Grid.Column="2" Command="">
+            <Button Style="{StaticResource Manage}" Grid.Column="2" Command="{Binding OpenExchangeCurrency}">
                 <TextBlock>Currency exchange</TextBlock>
             </Button>
         </Grid>
