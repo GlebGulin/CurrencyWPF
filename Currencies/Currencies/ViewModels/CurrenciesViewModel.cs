@@ -20,6 +20,7 @@ namespace Currencies.ViewModels
     {
         public ICommand GetDetailCommand { get; }
         public ICommand SelectTopQuatity => new Command(() => { SelectTopQuatityChanged(); });
+        public ICommand ChooseCurrency => new Command(() => { ChooseCurrencyDetail(); });
         private Currency selectedCurrency;
         public ObservableCollection<QuantityTopModel> DefaultQuantity { get; set; }
         private QuantityTopModel _selQuantityTopModel;
@@ -124,6 +125,11 @@ namespace Currencies.ViewModels
         private void SelectTopQuatityChanged()
         {
             FetchData();
+        }
+
+        private void ChooseCurrencyDetail()
+        {
+            GetDetailCommand.Execute(this.SelectedCurrency.Id);
         }
     }
 }
