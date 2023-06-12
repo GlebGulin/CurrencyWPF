@@ -1,4 +1,5 @@
-﻿using Currencies.Commands;
+﻿using Common;
+using Currencies.Commands;
 using Currencies.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -6,12 +7,13 @@ using NLayerApp.DAL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace Currencies.ViewModels
 {
@@ -19,13 +21,24 @@ namespace Currencies.ViewModels
     {
         public ICommand BackToCurrencies { get; }
         public ObservableCollection<HistoryItem> History { get; set; }
+        public List<HistoryItem> HistoryList { get; set; } = new List<HistoryItem>();
+        public List<double> CurrentValues { get; set; } = new List<double>();
         public string Id { get; set; }
+        public int ValuesCount { get; set; }
         public int currentSecond = 0;
         Random rd = new Random();
         public PointCollection LtPoint { get; set; }
-        public string PointsNormalize { get; set; } = "10, 30, 20, 50, 30, 20, 40, 100";
+        private DrawPointModel _drawModel { get; set; }
+        public DrawPointModel DrawModel
+        {
+            get { return _drawModel; }
+            set
+            {
+                _drawModel = value;
+                OnPropertyChanged("DrawModel");
+            }
+        }
 
-        public DrawPointModel DrawModel { get; set; } 
         public HistoryViewModel(NavigationService<CurrenciesViewModel> getCurrencies)
         {
             BackToCurrencies = new NavigateCommand<CurrenciesViewModel>(getCurrencies);
@@ -33,48 +46,45 @@ namespace Currencies.ViewModels
         public override async Task OnInitialized(object parameter)
         {
             FetchData(parameter.ToString());
-            //DispatcherTimer timer = new DispatcherTimer();
-            //timer.Tick += Timer_Tick;
-            //timer.Interval = TimeSpan.FromMilliseconds(1500);
-            //timer.Start();
-            
             DrawGraphic();
         }
 
         public void DrawGraphic()
         {
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            Timer_Tick();
-            myModel = new DrawPointModel()
+            StringBuilder sb = new StringBuilder();
+            double position = 0;
+            DrawModel = new DrawPointModel()
             {
                 ColorName = "Blue",
-                PointsNormalize = "10, 30, 20, 50, 30, 20, 40, 100, 50, 200, 60, 20, 70, 100"
+                PointsNormalize = "0.5, 30, 2, 50, 3.5, 20, 4.7, 100, 5.5, 200, 6.7, 20, 70.0009, 100,",
+                Height = Constants.BasicHeigthPolygon,
+                Width = Constants.BasicWithPolygon
             };
+            DrawModel.ValueCount = ValuesCount;
+            for (int i = 0; i < DrawModel.ValueCount; i++)
+            {
+                CurrentValues.Add(double.Parse(HistoryList[i].PriceUsd, System.Globalization.CultureInfo.InvariantCulture));
+            }
+            double max = CurrentValues.Max<double>();
+            double min = CurrentValues.Min<double>();
+            double difference = max - min;
+            
+            DrawModel.stepX = (double)(Constants.BasicWithPolygon / DrawModel.ValueCount);
+            for (int i = 0; i < DrawModel.ValueCount; i++)
+            {
+                double curVal = Constants.BasicHeigthPolygon -((Constants.BasicHeigthPolygon * ((double.Parse(HistoryList[i].PriceUsd, System.Globalization.CultureInfo.InvariantCulture)) - min)) / difference);
+                position += DrawModel.stepX;
+                sb.Append(String.Format("{0}, {1},", position.ToString().Replace(',', '.'), curVal.ToString().Replace(',', '.')));
+            }
+
+            string Normal = sb.ToString();
+            DrawModel.PointsNormalize = Normal.Remove(Normal.Length - 1);
+
+            DrawModel.StartPeriod = HistoryList[0].Time;
+            DrawModel.EndPeriod = HistoryList[HistoryList.Count-1].Time;
+            
+            DrawModel.MaxValue = max.ToString();
+            DrawModel.MinValue = min.ToString();
         }
 
         private void Timer_Tick()
@@ -96,9 +106,10 @@ namespace Currencies.ViewModels
                     string jsonString = result.Result.Content.ReadAsStringAsync().Result;
                     var jsonObj = (JObject)JsonConvert.DeserializeObject(jsonString);
                     var jsonArr = jsonObj.SelectToken("data");
-                    List<HistoryItem> lst11 = JsonConvert.DeserializeObject<List<HistoryItem>>(jsonArr.ToString());
-                    LtPoint = new PointCollection(lst11.Count);
-                    //History = JsonConvert.DeserializeObject<List<HistoryItem>>(jsonArr.ToString());
+                    HistoryList = JsonConvert.DeserializeObject<List<HistoryItem>>(jsonArr.ToString());
+                    LtPoint = new PointCollection(HistoryList.Count);
+                    ValuesCount = HistoryList.Count;
+                    MakeListHistoryItems(HistoryList);
                 }
             }
             catch(Exception ex)
@@ -107,6 +118,18 @@ namespace Currencies.ViewModels
                 MessageBoxImage icon = MessageBoxImage.Warning;
                 MessageBoxResult result;
                 result = MessageBox.Show(ex.Message, null, button, icon, MessageBoxResult.Yes);
+            }
+        }
+
+        private void MakeListHistoryItems(List<HistoryItem> items)
+        {
+            if(items.Count > 0)
+            {
+                History = new ObservableCollection<HistoryItem>();
+                foreach (var item in items)
+                {
+                    History.Add(item);
+                }
             }
         }
     }

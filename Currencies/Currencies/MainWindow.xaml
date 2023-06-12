@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:Currencies.Views"
         xmlns:vms="clr-namespace:Currencies.ViewModels"
         mc:Ignorable="d"
-        Title="Currencies" Height="450" Width="800">
+        Title="Currencies" Height="550" Width="900">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="15" />

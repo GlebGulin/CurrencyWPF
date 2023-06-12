@@ -31,17 +31,46 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label Content="Will be history">
-            </Label>
+            <TextBlock Style="{StaticResource Header}" Text="Rate conversion to USD">
+            </TextBlock>
         </Grid>
         <Grid Grid.Row="1">
-            <Canvas Height="300" Width="400">
-                <Polyline Height="300" Stroke="Red" StrokeThickness="4" Points="{Binding DrawModel.PointsNormalize}" ></Polyline>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition Width="0.9*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.9*"/>
+                    <RowDefinition Height="0.1*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Label Grid.Row="0" Content="{Binding DrawModel.MaxValue}" />
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Label Grid.Row="1" Content="{Binding DrawModel.MinValue}" />
+                </Grid>
+            </Grid>
+            <Canvas Height="300" Grid.Column="1">
+                <Polyline Height="300" Stroke="Red" StrokeThickness="2" Points="{Binding DrawModel.PointsNormalize}" ></Polyline>
+                <Line X1="0" Y1="{Binding DrawModel.Height}" X2="{Binding DrawModel.Width}" Y2="300" Stroke="Black" />
+                <Line X1="0" Y1="0" X2="0" Y2="300" Stroke="Black" />
             </Canvas>
         </Grid>
         <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="0.2*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="{Binding DrawModel.StartPeriod}">
+            </Label>
+            <Label Grid.Column="1" Content="{Binding DrawModel.EndPeriod}">
+            </Label>
+        </Grid>
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

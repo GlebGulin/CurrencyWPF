@@ -1,5 +1,7 @@
-﻿using Currencies.Commands;
+﻿using Common;
+using Currencies.Commands;
 using Currencies.Services;
+using MvvmHelpers.Commands;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLayerApp.DAL;
@@ -17,8 +19,21 @@ namespace Currencies.ViewModels
     public class CurrenciesViewModel : ViewModelBase
     {
         public ICommand GetDetailCommand { get; }
+        public ICommand SelectTopQuatity => new Command(() => { SelectTopQuatityChanged(); });
         private Currency selectedCurrency;
-        public ObservableCollection<Currency> Curencies { get; set; }
+        public ObservableCollection<QuantityTopModel> DefaultQuantity { get; set; }
+        private QuantityTopModel _selQuantityTopModel;
+        public QuantityTopModel SelQuantityTopModel
+        {
+            get { return _selQuantityTopModel; }
+            set
+            {
+                _selQuantityTopModel = value;
+                OnPropertyChanged("SelQuantityTopModel");
+            }
+        }
+        public ObservableCollection<Currency> Curencies { get; set; } = new ObservableCollection<Currency>();
+
         public Currency SelectedCurrency
         {
             get { return selectedCurrency; }
@@ -30,6 +45,14 @@ namespace Currencies.ViewModels
         }
         public CurrenciesViewModel(NavigationService<CurrencyDetailViewModel> getDetailCurrency)
         {
+            DefaultQuantity = new ObservableCollection<QuantityTopModel>()
+            {
+                new QuantityTopModel(){ Id = 10, Val = 10},
+                new QuantityTopModel(){ Id = 15, Val = 15},
+                new QuantityTopModel(){ Id = 25, Val = 25},
+                new QuantityTopModel(){ Id = 50, Val = 50},
+                new QuantityTopModel(){ Id = 100, Val = 100}
+            };
             GetDetailCommand = new NavigateCommand<CurrencyDetailViewModel>(getDetailCurrency);
             FetchData();
         }
@@ -42,17 +65,22 @@ namespace Currencies.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
                 var id = this.SelectedCurrency.Id;
             }
-            GetDetailCommand.Execute(this.SelectedCurrency.Id);
+            //GetDetailCommand.Execute(this.SelectedCurrency.Id);
         }
 
         private void FetchData()
         {
             List<CurrencyTemp> models = null;
+            if (_selQuantityTopModel is null)
+            {
+                _selQuantityTopModel = new QuantityTopModel() { Id = 10, Val = 10 };
+            }
+            var url = String.Format("{0}{1}{2}", Constants.ApiBaseUrl, "?limit=", _selQuantityTopModel.Val.ToString());
             try
             {
                 using (var client = new HttpClient())
                 {
-                    using var result = client.GetAsync("https://api.coincap.io/v2/assets?limit=10");
+                    using var result = client.GetAsync(url);
                     string jsonString = result.Result.Content.ReadAsStringAsync().Result;
                     var jsonObj = (JObject)JsonConvert.DeserializeObject(jsonString);
                     var jsonArr = jsonObj.SelectToken("data");
@@ -61,7 +89,7 @@ namespace Currencies.ViewModels
                 }
                 if (models.Count != 0)
                 {
-                    Curencies = new ObservableCollection<Currency>();
+                    Curencies.Clear();
                     foreach (var model in models)
                     {
                         var cur = new Currency()
@@ -91,6 +119,11 @@ namespace Currencies.ViewModels
                 MessageBoxResult result;
                 result = MessageBox.Show(error, null, button, icon, MessageBoxResult.Yes);
             }
+        }
+
+        private void SelectTopQuatityChanged()
+        {
+            FetchData();
         }
     }
 }

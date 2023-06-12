@@ -2,6 +2,13 @@
 {
     public static class Constants
     {
-        public static string ApiBaseUrl = "https://api.coincap.io/v2/assets";
+        #region GlobalSettings
+        public static string ApiBaseUrl      = "https://api.coincap.io/v2/assets";
+        #endregion GlobalSettins
+
+        #region GraphicsSettings
+        public static double BasicWithPolygon   = 550.0;
+        public static double BasicHeigthPolygon = 300.0;
+        #endregion 
     }
 }
