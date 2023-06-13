@@ -54,6 +54,7 @@ namespace Currencies.ViewModels
                 new QuantityTopModel(){ Id = 50, Val = 50},
                 new QuantityTopModel(){ Id = 100, Val = 100}
             };
+            SelQuantityTopModel = new QuantityTopModel() { Id = 10, Val = 10 };
             GetDetailCommand = new NavigateCommand<CurrencyDetailViewModel>(getDetailCurrency);
             FetchData();
         }
@@ -66,7 +67,6 @@ namespace Currencies.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
                 var id = this.SelectedCurrency.Id;
             }
-            //GetDetailCommand.Execute(this.SelectedCurrency.Id);
         }
 
         private void FetchData()

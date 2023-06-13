@@ -1,12 +1,14 @@
 ﻿using Common;
 using Currencies.Commands;
 using Currencies.Services;
+using MvvmHelpers.Commands;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLayerApp.DAL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -20,9 +22,21 @@ namespace Currencies.ViewModels
     public class HistoryViewModel : ViewModelBase
     {
         public ICommand BackToCurrencies { get; }
+        public ICommand ChoosePeriod => new Command(() => { ChoosePeriodDetail(); });
         public ObservableCollection<HistoryItem> History { get; set; }
         public List<HistoryItem> HistoryList { get; set; } = new List<HistoryItem>();
         public List<double> CurrentValues { get; set; } = new List<double>();
+        public ObservableCollection<PeriodTimeModel> DefaultPeriods { get; set; }
+        private PeriodTimeModel _selPeriodModel;
+        public PeriodTimeModel SelPeriodModel
+        {
+            get { return _selPeriodModel; }
+            set
+            {
+                _selPeriodModel = value;
+                OnPropertyChanged("SelPeriodModel");
+            }
+        }
         public string Id { get; set; }
         public int ValuesCount { get; set; }
         public int currentSecond = 0;
@@ -42,10 +56,23 @@ namespace Currencies.ViewModels
         public HistoryViewModel(NavigationService<CurrenciesViewModel> getCurrencies)
         {
             BackToCurrencies = new NavigateCommand<CurrenciesViewModel>(getCurrencies);
+            DefaultPeriods = new ObservableCollection<PeriodTimeModel>()
+            {
+                new PeriodTimeModel(){ PeriodType = PeriodType.d1, Name = "Daily last year"},
+                new PeriodTimeModel(){ PeriodType = PeriodType.m1, Name = "Last day (every 1 minute)"},
+                new PeriodTimeModel(){ PeriodType = PeriodType.m5, Name = "Last 5 day (every 5 minute)"},
+                new PeriodTimeModel(){ PeriodType = PeriodType.m15, Name = "Last 7 day (every 15 minute)"},
+                new PeriodTimeModel(){ PeriodType = PeriodType.h1, Name = "Last month (every hour)"},
+                new PeriodTimeModel(){ PeriodType = PeriodType.h2, Name = "Last 2 months (every 2 hours)"},
+                new PeriodTimeModel(){ PeriodType = PeriodType.h6, Name = "Last 6 months (every 6 hours)"},
+                new PeriodTimeModel(){ PeriodType = PeriodType.h12, Name = "Last year (every 12 hours)"},
+            };
+            SelPeriodModel = DefaultPeriods[0];
         }
         public override async Task OnInitialized(object parameter)
         {
-            FetchData(parameter.ToString());
+            Id = parameter.ToString();
+            FetchData(Id, _selPeriodModel.PeriodType);
             DrawGraphic();
         }
 
@@ -56,7 +83,6 @@ namespace Currencies.ViewModels
             DrawModel = new DrawPointModel()
             {
                 ColorName = "Blue",
-                PointsNormalize = "0.5, 30, 2, 50, 3.5, 20, 4.7, 100, 5.5, 200, 6.7, 20, 70.0009, 100,",
                 Height = Constants.BasicHeigthPolygon,
                 Width = Constants.BasicWithPolygon
             };
@@ -82,22 +108,25 @@ namespace Currencies.ViewModels
 
             DrawModel.StartPeriod = HistoryList[0].Time;
             DrawModel.EndPeriod = HistoryList[HistoryList.Count-1].Time;
-            
+            DateTime dateSt;
+            DateTime.TryParse(DrawModel.StartPeriod, out dateSt);
+            DateTime dateEnd;
+            DateTime.TryParse(DrawModel.StartPeriod, out dateEnd);
+            DrawModel.StartPeriod = dateSt.ToString(Constants.DisplayDateFormat);
+            DrawModel.EndPeriod = dateEnd.ToString(Constants.DisplayDateFormat);
             DrawModel.MaxValue = max.ToString();
             DrawModel.MinValue = min.ToString();
         }
 
-        private void Timer_Tick()
+        private void ChoosePeriodDetail()
         {
-            currentSecond++;
-            double x = currentSecond * 10;
-            double y = rd.Next(1, 1000);
-            LtPoint.Add(new Point(x, y));
+            FetchData(Id, _selPeriodModel.PeriodType);
+            DrawGraphic();
         }
 
-        private void FetchData(string Id)
+        private void FetchData(string Id, PeriodType period)
         {
-            var url = String.Format("{0}{1}{2}", "https://api.coincap.io/v2/assets/", Id, "/history?interval=d1");
+            var url = String.Format("{0}{1}{2}{3}{4}", Constants.ApiBaseUrl, "/", Id, "/history?interval=", period.ToString());
             try
             {
                 using (var client = new HttpClient())

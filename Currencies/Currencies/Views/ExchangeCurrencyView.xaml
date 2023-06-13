@@ -49,12 +49,6 @@
             <Button Style="{StaticResource Manage}" Grid.Column="0" Command="{Binding BackToCurrencies}">
                 <TextBlock>Back to currencies</TextBlock>
             </Button>
-            <Button Style="{StaticResource Manage}" Grid.Column="1" Command="{Binding OpenHistoryCurrency}">
-                <TextBlock>History</TextBlock>
-            </Button>
-            <Button Style="{StaticResource Manage}" Grid.Column="2" Command="">
-                <TextBlock>Currency exchange</TextBlock>
-            </Button>
         </Grid>
         
     </Grid>
