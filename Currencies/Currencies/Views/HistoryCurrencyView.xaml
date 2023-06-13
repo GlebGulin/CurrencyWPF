@@ -18,7 +18,7 @@
         <Style x:Key="Vals" TargetType="TextBlock">
             <Setter Property="FontSize" Value="17" />
             <Setter Property="FontWeight" Value="Normal" />
-            <Setter Property="Foreground" Value="#FF3C040E" />
+            <Setter Property="Foreground" Value="#FFEC0808" />
         </Style>
         <Style x:Key="Manage" TargetType="Button">
             <Setter Property="Margin" Value="10" />

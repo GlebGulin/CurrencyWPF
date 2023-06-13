@@ -21,6 +21,8 @@ namespace Currencies.ViewModels
         public ICommand GetDetailCommand { get; }
         public ICommand SelectTopQuatity => new Command(() => { SelectTopQuatityChanged(); });
         public ICommand ChooseCurrency => new Command(() => { ChooseCurrencyDetail(); });
+        private List<CurrencyTemp> lst { get; set; } = new List<CurrencyTemp>();
+        private ParameterModel parameter { get; set; } = new ParameterModel();
         private Currency selectedCurrency;
         public ObservableCollection<QuantityTopModel> DefaultQuantity { get; set; }
         private QuantityTopModel _selQuantityTopModel;
@@ -85,7 +87,7 @@ namespace Currencies.ViewModels
                     string jsonString = result.Result.Content.ReadAsStringAsync().Result;
                     var jsonObj = (JObject)JsonConvert.DeserializeObject(jsonString);
                     var jsonArr = jsonObj.SelectToken("data");
-                    List<CurrencyTemp> lst11 = JsonConvert.DeserializeObject<List<CurrencyTemp>>(jsonArr.ToString());
+                    lst = JsonConvert.DeserializeObject<List<CurrencyTemp>>(jsonArr.ToString());
                     models = JsonConvert.DeserializeObject<List<CurrencyTemp>>(jsonArr.ToString());
                 }
                 if (models.Count != 0)
@@ -129,7 +131,9 @@ namespace Currencies.ViewModels
 
         private void ChooseCurrencyDetail()
         {
-            GetDetailCommand.Execute(this.SelectedCurrency.Id);
+            parameter.Id = this.SelectedCurrency.Id;
+            parameter.Currencies = lst;
+            GetDetailCommand.Execute(parameter);
         }
     }
 }

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Currencies"
         mc:Ignorable="d">
     <UserControl.Resources>
@@ -28,17 +29,42 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.1*"></RowDefinition>
+            <RowDefinition Height="0.1*"></RowDefinition>
+            <RowDefinition Height="0.1*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label Content="Will be exchange">
-            </Label>
+            <TextBlock>
+                <Run Text="Currency exchange for the currency dollar "/>
+                <Run Text="{Binding CurrencyName}"/>
+            </TextBlock>
         </Grid>
         <Grid Grid.Row="1">
-            <Label Content="Will be graphic">
-            </Label>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <TextBox Height="40" Width="200" Text="{Binding InputValue, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <ComboBox ItemsSource="{Binding Path=ChooseExchange}" 
+                      SelectedItem="{Binding Path=SelCurrency}"
+                      SelectedIndex="0"
+                      DisplayMemberPath="Name" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding ChangeCurrency}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+            </Grid>
+            <Grid Grid.Column="2">
+                <TextBlock Style="{StaticResource Header}" Text="OutValue" >
+                </TextBlock>
+            </Grid>
+            
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

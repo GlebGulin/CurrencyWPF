@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLayerApp.DAL;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -22,6 +23,8 @@ namespace Currencies.ViewModels
         public ICommand ExchangeCurrency { get; }
         public ICommand OpenHistoryCurrency => new Command(() => { OpenHistory(); });
         public ICommand OpenExchangeCurrency => new Command(() => { OpenExchange(); });
+        private List<CurrencyTemp> lst { get; set; } = new List<CurrencyTemp>();
+        private ParameterModel parameter { get; set; } = new ParameterModel();
         public string Id { get; set; }
         private Currency _сurrency { get; set; }
         public Currency Currency
@@ -45,8 +48,9 @@ namespace Currencies.ViewModels
 
         public override async Task OnInitialized(object parameter)
         {
-
-            Id = parameter.ToString();
+            var param = parameter as ParameterModel;
+            Id = param.Id;
+            lst = param.Currencies;
             var url = String.Format("{0}{1}", "https://api.coincap.io/v2/assets/", Id);
             try
             {
@@ -91,12 +95,17 @@ namespace Currencies.ViewModels
 
         private void OpenHistory()
         {
-            HistoryCurrency.Execute(this.Id);
+            parameter.Id = this.Id;
+            HistoryCurrency.Execute(parameter.Id);
         }
 
         private void OpenExchange()
         {
-            ExchangeCurrency.Execute(this.Id);
+            parameter.Id = this.Id;
+            parameter.Currencies = this.lst;
+            parameter.CurrentPrice = this._сurrency.PriceUsd;
+            parameter.CurrentName = this._сurrency.Name;
+            ExchangeCurrency.Execute(parameter);
         }
     }
 }
