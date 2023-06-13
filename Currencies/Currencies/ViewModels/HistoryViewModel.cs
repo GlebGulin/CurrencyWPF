@@ -21,7 +21,11 @@ namespace Currencies.ViewModels
     public class HistoryViewModel : ViewModelBase
     {
         public ICommand BackToCurrencies { get; }
+        public ICommand ExchangeCurrency { get; }
         public ICommand ChoosePeriod => new Command(() => { ChoosePeriodDetail(); });
+        public ICommand OpenExchangeCurrency => new Command(() => { OpenExchange(); });
+        private ParameterModel parameter { get; set; } = new ParameterModel();
+        private List<CurrencyTemp> lst { get; set; } = new List<CurrencyTemp>();
         private string сurrentPriceUsd;
         public string CurrentPriceUsd
         {
@@ -30,6 +34,17 @@ namespace Currencies.ViewModels
             {
                 сurrentPriceUsd = value;
                 OnPropertyChanged("CurrentPriceUsd");
+            }
+        }
+
+        private string сurrentName;
+        public string CurrentName
+        {
+            get { return сurrentName; }
+            set
+            {
+                сurrentName = value;
+                OnPropertyChanged("CurrentName");
             }
         }
         public ObservableCollection<HistoryItem> History { get; set; }
@@ -62,7 +77,8 @@ namespace Currencies.ViewModels
             }
         }
 
-        public HistoryViewModel(NavigationService<CurrenciesViewModel> getCurrencies)
+        public HistoryViewModel(NavigationService<CurrenciesViewModel> getCurrencies,
+                                NavigationService<ExchangeCurrencyViewModel> getExchangeCurrency)
         {
             BackToCurrencies = new NavigateCommand<CurrenciesViewModel>(getCurrencies);
             DefaultPeriods = new ObservableCollection<PeriodTimeModel>()
@@ -77,10 +93,14 @@ namespace Currencies.ViewModels
                 new PeriodTimeModel(){ PeriodType = PeriodType.h12, Name = "Last year (every 12 hours)"},
             };
             SelPeriodModel = DefaultPeriods[0];
+            ExchangeCurrency = new NavigateCommand<ExchangeCurrencyViewModel>(getExchangeCurrency);
         }
         public override async Task OnInitialized(object parameter)
         {
-            Id = parameter.ToString();
+            var param = parameter as ParameterModel;
+            Id = param.Id;
+            lst = param.Currencies;
+            CurrentName = param.CurrentName;
             FetchData(Id, _selPeriodModel.PeriodType);
             DrawGraphic();
         }
@@ -171,6 +191,15 @@ namespace Currencies.ViewModels
                     History.Add(item);
                 }
             }
+        }
+
+        private void OpenExchange()
+        {
+            parameter.Id = this.Id;
+            parameter.Currencies = this.lst;
+            parameter.CurrentPrice = this.CurrentPriceUsd;
+            parameter.CurrentName = this.CurrentName;
+            ExchangeCurrency.Execute(parameter);
         }
     }
 }

@@ -113,7 +113,7 @@
             <Button Style="{StaticResource Manage}" Grid.Column="0" Command="{Binding BackToCurrencies}">
                 <TextBlock>Back to currencies</TextBlock>
             </Button>
-            <Button Style="{StaticResource Manage}" Grid.Column="1" Command="">
+            <Button Style="{StaticResource Manage}" Grid.Column="1" Command="{Binding OpenExchangeCurrency}">
                 <TextBlock>Currency exchange</TextBlock>
             </Button>
         </Grid>

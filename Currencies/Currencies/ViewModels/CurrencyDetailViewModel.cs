@@ -96,7 +96,10 @@ namespace Currencies.ViewModels
         private void OpenHistory()
         {
             parameter.Id = this.Id;
-            HistoryCurrency.Execute(parameter.Id);
+            parameter.Currencies = this.lst;
+            parameter.CurrentPrice = this._сurrency.PriceUsd;
+            parameter.CurrentName = this._сurrency.Name;
+            HistoryCurrency.Execute(parameter);
         }
 
         private void OpenExchange()

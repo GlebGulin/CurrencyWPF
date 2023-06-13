@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Currencies.ViewModels
@@ -33,6 +34,7 @@ namespace Currencies.ViewModels
             {
                 inputValue = value;
                 OnPropertyChanged("InputValue");
+                CalculateExchange();
             }
         }
 
@@ -83,6 +85,7 @@ namespace Currencies.ViewModels
                 ChooseExchange.Add(new SelectExchangeModel() { PriceUsd = currency.PriceUsd, Name = currency.Name });
             }
             SelCurrency = ChooseExchange[0];
+            InputValue = "0";
             CalculateExchange();
         }
         private void CalculateExchange()
@@ -91,11 +94,16 @@ namespace Currencies.ViewModels
             {
                 float currentPriceUsd = float.Parse(CurrencyPriceUsd, CultureInfo.InvariantCulture.NumberFormat);
                 float selectedCurrencyPriceusd = float.Parse(SelCurrency.PriceUsd, CultureInfo.InvariantCulture.NumberFormat);
-                float convertedInputVal = float.Parse(InputValue, CultureInfo.InvariantCulture.NumberFormat) / currentPriceUsd;
+                float inputPriceUSD = float.Parse(InputValue, CultureInfo.InvariantCulture.NumberFormat) * currentPriceUsd;
+                float outputPriceChosenCurrency = inputPriceUSD / selectedCurrencyPriceusd;
+                OutValue = outputPriceChosenCurrency.ToString();
             }
             catch(Exception ex)
             {
-
+                MessageBoxButton button = MessageBoxButton.YesNoCancel;
+                MessageBoxImage icon = MessageBoxImage.Warning;
+                MessageBoxResult result;
+                result = MessageBox.Show(ex.Message, null, button, icon, MessageBoxResult.Yes);
             }
         }
 

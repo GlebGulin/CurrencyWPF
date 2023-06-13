@@ -29,9 +29,10 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*"></RowDefinition>
-            <RowDefinition Height="0.1*"></RowDefinition>
-            <RowDefinition Height="0.1*"></RowDefinition>
+            <RowDefinition Height="0.05*"></RowDefinition>
+            <RowDefinition Height="0.05*"></RowDefinition>
+            <RowDefinition Height="0.05*"></RowDefinition>
+            <RowDefinition Height="0.85*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <TextBlock>
@@ -48,7 +49,7 @@
             <Grid Grid.Column="0">
                 <TextBox Height="40" Width="200" Text="{Binding InputValue, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Margin="30">
                 <ComboBox ItemsSource="{Binding Path=ChooseExchange}" 
                       SelectedItem="{Binding Path=SelCurrency}"
                       SelectedIndex="0"
@@ -60,8 +61,8 @@
                     </i:Interaction.Triggers>
                 </ComboBox>
             </Grid>
-            <Grid Grid.Column="2">
-                <TextBlock Style="{StaticResource Header}" Text="OutValue" >
+            <Grid Grid.Column="2" Margin="30">
+                <TextBlock Style="{StaticResource Header}" Text="{Binding OutValue}" >
                 </TextBlock>
             </Grid>
             
@@ -76,7 +77,8 @@
                 <TextBlock>Back to currencies</TextBlock>
             </Button>
         </Grid>
-        
-    </Grid>
+        <Grid Grid.Row="3">
+        </Grid>
+        </Grid>
     
 </UserControl>
