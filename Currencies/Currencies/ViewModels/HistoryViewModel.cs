@@ -23,6 +23,16 @@ namespace Currencies.ViewModels
     {
         public ICommand BackToCurrencies { get; }
         public ICommand ChoosePeriod => new Command(() => { ChoosePeriodDetail(); });
+        private string сurrentPriceUsd;
+        public string CurrentPriceUsd
+        {
+            get { return сurrentPriceUsd; }
+            set
+            {
+                сurrentPriceUsd = value;
+                OnPropertyChanged("CurrentPriceUsd");
+            }
+        }
         public ObservableCollection<HistoryItem> History { get; set; }
         public List<HistoryItem> HistoryList { get; set; } = new List<HistoryItem>();
         public List<double> CurrentValues { get; set; } = new List<double>();
@@ -116,6 +126,8 @@ namespace Currencies.ViewModels
             DrawModel.EndPeriod = dateEnd.ToString(Constants.DisplayDateFormat);
             DrawModel.MaxValue = max.ToString();
             DrawModel.MinValue = min.ToString();
+
+            CurrentPriceUsd = HistoryList[HistoryList.Count - 1].PriceUsd;
         }
 
         private void ChoosePeriodDetail()

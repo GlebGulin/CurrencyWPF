@@ -18,7 +18,7 @@
         <Style x:Key="Vals" TargetType="TextBlock">
             <Setter Property="FontSize" Value="17" />
             <Setter Property="FontWeight" Value="Normal" />
-            <Setter Property="Foreground" Value="#FF2A5B23" />
+            <Setter Property="Foreground" Value="#FF3C040E" />
         </Style>
         <Style x:Key="Manage" TargetType="Button">
             <Setter Property="Margin" Value="10" />
@@ -36,7 +36,15 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <TextBlock Style="{StaticResource Header}" Text="Rate conversion to USD">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Style="{StaticResource Header}" Text="Rate conversion to USD">
+            </TextBlock>
+            <TextBlock Grid.Column="1" Style="{StaticResource Vals}" >
+                <Run Text="{Binding CurrentPriceUsd}"/>
+                <Run Text="$"/>
             </TextBlock>
         </Grid>
         <Grid Grid.Row="1">
